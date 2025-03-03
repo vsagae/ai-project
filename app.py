@@ -23,22 +23,20 @@ def selecionar_arquivo():
     arquivo_selecionado = filedialog.askopenfilename()
     if arquivo_selecionado:
         label_arquivo.config(text=f"Selected: {arquivo_selecionado}")
-        dir = os.path.dirname(arquivo_selecionado)  # Obtém o diretório do arquivo
+        dir = os.path.dirname(arquivo_selecionado) 
 
 # Função para rodar a análise
 def rodar_analise():
     if not arquivo_selecionado:
         messagebox.showerror("Error", "Please, first select a file!")
         return
-    
-    # Simulação de análise
+
     messagebox.showinfo("Processing", f"Processing file:\n{arquivo_selecionado}")
     realizar_analise(arquivo_selecionado)
     messagebox.showinfo("Done", "The file was processed!")
 
-# Função fictícia de análise
 def realizar_analise(arquivo):
-    print(f"Processing {arquivo}...")  # Aqui você coloca sua lógica de análise
+    print(f"Processing {arquivo}...")
     pages = convert_from_path(arquivo, dpi=300)
 
     if not os.path.exists(f'{dir}/processing'):
@@ -151,7 +149,6 @@ def realizar_analise(arquivo):
         (h, w) = cvImage.shape[:2]
         center = (w // 2, h // 2)
         
-        # Calcular nova caixa delimitadora para garantir que a imagem não seja cortada
         M = cv2.getRotationMatrix2D(center, angle, 1.0)
         cos = np.abs(M[0, 0])
         sin = np.abs(M[0, 1])
@@ -160,7 +157,6 @@ def realizar_analise(arquivo):
         new_w = int((h * sin) + (w * cos))
         new_h = int((h * cos) + (w * sin))
 
-        # Ajuste da matriz de rotação para o novo tamanho da imagem
         M[0, 2] += (new_w - w) / 2
         M[1, 2] += (new_h - h) / 2
 
@@ -374,22 +370,22 @@ def realizar_analise(arquivo):
 
     
     
-# Criando a interface
+# interface
 root = tk.Tk()
 root.title("MOCK Processor")
 root.geometry("500x300")  # Define o tamanho da janela (largura x altura)
 
-# Botão para selecionar arquivo
+# selecionar arquivo
 btn_selecionar = tk.Button(root, text="Select File", command=selecionar_arquivo)
 btn_selecionar.pack(pady=10)
 
-# Label para mostrar arquivo selecionado
+# mostrar arquivo selecionado
 label_arquivo = tk.Label(root, text="Nenhum arquivo selecionado", wraplength=300)
 label_arquivo.pack()
 
-# Botão para rodar análise
+# rodar análise
 btn_rodar = tk.Button(root, text="Process file", command=rodar_analise)
 btn_rodar.pack(pady=10)
 
-# Rodar o loop da interface
+# loop da interface
 root.mainloop()
